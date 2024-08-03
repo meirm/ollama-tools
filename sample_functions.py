@@ -3,7 +3,12 @@ import requests
 import time
 
 def do_math(a:int, op:str, b:int)->str:
-    """Do basic math operations"""
+    """
+    Do basic math operations
+    a: The first operand
+    op: The operation to perform (one of '+', '-', '*', '/')
+    b: The second operand
+    """
     res = "Nan"
     if op == "+":
         res = str(int(a) + int(b))

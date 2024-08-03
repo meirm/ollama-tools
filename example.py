@@ -5,12 +5,18 @@ from rich import print
 import time
 import os
 import logging
+import sys
+import argparse
 
 from sample_functions import do_math, get_current_time, get_current_weather
 from ollama_tools import  generate_function_description, use_tools
 
+parser = argparse.ArgumentParser(description='Chatbot example')
+parser.add_argument('--logging', type=str, default='INFO', help='Logging level')
+args = parser.parse_args()
+
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=args.logging, format='%(asctime)s - %(levelname)s - %(message)s')
 
 tools=[
         generate_function_description(get_current_weather),

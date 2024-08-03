@@ -1,3 +1,4 @@
 ollama
 rich
 requests
+argparse
