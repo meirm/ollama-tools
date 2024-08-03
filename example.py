@@ -8,7 +8,7 @@ import logging
 import sys
 import argparse
 
-from sample_functions import do_math, get_current_time, get_current_weather
+from sample_functions import do_math, get_current_time, get_current_weather, query_duckduckgo
 from ollama_tools import  generate_function_description, use_tools
 
 parser = argparse.ArgumentParser(description='Chatbot example')
@@ -22,6 +22,7 @@ tools=[
         generate_function_description(get_current_weather),
         generate_function_description(get_current_time),
         generate_function_description(do_math),
+        generate_function_description(query_duckduckgo),
         ]
 
 logging.debug("Tools:")
@@ -32,6 +33,7 @@ print()
 functions = {function["function"]["name"]: globals()[function["function"]["name"]] for function in tools }
 
 messages = [('system', "You are an assistant with access to tools, if you do not have a tool to deal with the user's request but you think you can answer do it so, if not explain your capabilities")]
+messages = []
 
 def query_model(messages, tools):
     response = ollama.chat(
