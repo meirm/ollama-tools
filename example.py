@@ -5,9 +5,9 @@ from rich import print
 import time
 import os
 import logging
-from ollama_tools import  generate_function_description
 
 from sample_functions import do_math, get_current_time, get_current_weather
+from ollama_tools import  generate_function_description, use_tools
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,8 +20,11 @@ tools=[
 
 logging.debug("Tools:")
 logging.debug(json.dumps(tools, indent=4))
-functions = [ f["function"]["description"] for f in tools ]
-print("I am a chatbot able to do run some functions.\n", "Functions:\n\t",  functions)
+functions_desc = [ f["function"]["description"] for f in tools ]
+print("I am a chatbot able to do run some functions.", "Functions:\n\t",  "\n\t".join(functions_desc))
+print()
+functions = {function["function"]["name"]: globals()[function["function"]["name"]] for function in tools }
+
 messages = []
 while True:
     query = input()
@@ -38,12 +41,7 @@ while True:
 
     tools_calls = response['message']['tool_calls']
     logging.debug(tools_calls)
-    # Parse tool name and arguments
-    tool_name = tools_calls[0]['function']['name']
-    arguments = tools_calls[0]['function']['arguments']
-
-    # Dynamically call the function
-    result = globals()[tool_name](**arguments)
+    result = use_tools(tools_calls, functions)
     print(result)
     messages.append(("assistant", result))
 
