@@ -1,0 +1,3 @@
+ollama
+rich
+requests
