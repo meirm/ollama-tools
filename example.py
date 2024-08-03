@@ -25,9 +25,12 @@ print("I am a chatbot able to do run some functions.", "Functions:\n\t",  "\n\t"
 print()
 functions = {function["function"]["name"]: globals()[function["function"]["name"]] for function in tools }
 
-messages = []
+messages = [('system', "You are an assistant with access to tools, if you do not have a tool to deal with the user's request but you think you can answer do it so, if not explain your capabilities")]
 while True:
-    query = input()
+    try:
+        query = input()
+    except EOFError:
+        break
     if query == "quit":
         break
     if query.strip() == "":
@@ -39,9 +42,12 @@ while True:
         tools=tools,
     )
 
-    tools_calls = response['message']['tool_calls']
-    logging.debug(tools_calls)
-    result = use_tools(tools_calls, functions)
+    if response['message']['content'] == "":
+        tools_calls = response['message']['tool_calls']
+        logging.debug(tools_calls)
+        result = use_tools(tools_calls, functions)
+    else:
+        result = response['message']['content']
     print(result)
     messages.append(("assistant", result))
 
