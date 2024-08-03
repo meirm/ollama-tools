@@ -32,6 +32,15 @@ print()
 functions = {function["function"]["name"]: globals()[function["function"]["name"]] for function in tools }
 
 messages = [('system', "You are an assistant with access to tools, if you do not have a tool to deal with the user's request but you think you can answer do it so, if not explain your capabilities")]
+
+def query_model(messages, tools):
+    response = ollama.chat(
+        model='llama3.1',
+        messages=[ {'role': role, 'content': content} for role,content in messages ],
+        tools=tools,
+    )
+    return response
+
 while True:
     try:
         query = input()
@@ -42,18 +51,20 @@ while True:
     if query.strip() == "":
         continue
     messages.append(("user", query))
-    response = ollama.chat(
-        model='llama3.1',
-        messages=[ {'role': role, 'content': content} for role,content in messages ],
+    response = query_model(
+        messages=messages,
         tools=tools,
     )
-
     if response['message']['content'] == "":
         tools_calls = response['message']['tool_calls']
         logging.debug(tools_calls)
         result = use_tools(tools_calls, functions)
-    else:
-        result = response['message']['content']
+        messages.append(("tool", result))
+        response = query_model(
+            messages=messages,
+            tools=tools,
+            )
+    result = response['message']['content']
     print(result)
     messages.append(("assistant", result))
 
