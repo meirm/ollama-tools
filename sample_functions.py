@@ -2,21 +2,19 @@ import json
 import requests
 import time
 
-def do_math(a:int, op:str, b:int)->int:
+def do_math(a:int, op:str, b:int)->str:
     """Do basic math operations"""
+    res = "Nan"
     if op == "+":
-        return int(a) + int(b)
+        res = str(int(a) + int(b))
     elif op == "-":
-        return int(a) - int(b)
+        res = str(int(a) - int(b))
     elif op == "*":
-        return int(a) * int(b)
+        res = str(int(a) * int(b))
     elif op == "/":
-        if int(b) == 0: 
-            return "Nan"
-        else:
-            return int(a)/int(b)
-    else:
-        return "Nan"
+        if int(b) != 0:
+            res = str(int(a) / int(b))
+    return res
 
 def get_current_time() -> str:
     """Get the current time"""
