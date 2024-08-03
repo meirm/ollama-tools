@@ -24,6 +24,8 @@ def generate_function_description(func):
             line = line.strip()
             if line:
                 if ':' in line:
+                    # strip leading/trailing whitespace and split into two parts
+                    line = re.sub(r'^\s*|\s*$', '', line)
                     parts = line.split(':', 1)
                     if parts[0] in params:
                         current_arg = parts[0]

@@ -27,7 +27,10 @@ def get_current_time() -> str:
     return f"The current time is {current_time}"
 
 def get_current_weather(city:str) -> str:
-    """Get the current weather for a city"""
+    """Get the current weather for a city
+    Args:
+        city: The city to get the weather for
+    """
     base_url = f"http://wttr.in/{city}?format=j1"
     response = requests.get(base_url)
     data = response.json()
