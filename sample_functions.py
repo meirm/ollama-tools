@@ -41,10 +41,15 @@ def get_duckduckgo_result(query: str) -> str:
 
 def do_math(a:int, op:str, b:int)->str:
     """
-    Do basic math operations
-    a: The first operand
-    op: The operation to perform (one of '+', '-', '*', '/')
-    b: The second operand
+    Do basic math operations.
+
+    Args:
+        a: The first number.
+        op: The operation to perform (+, -, *, /).
+        b: The second number.
+
+    Returns:
+        The result of the operation as a string.
     """
     res = "Nan"
     if op == "+":
@@ -58,17 +63,37 @@ def do_math(a:int, op:str, b:int)->str:
             res = str(int(a) / int(b))
     return res
 
-def get_current_time() -> str:
-    """Get the current time"""
+def get_current_date(date_format="%Y-%m-%d") -> str:
+    """Get the current date.
+
+    Args:
+        date_format: The format to return the date in. Default is %Y-%m-%d.
+    
+    Returns:
+        A string with the current date in the requested format.
+    """
+    current_date = time.strftime(date_format)
+    return f"{current_date}"
+
+def get_local_time() -> str:
+    """Get the current local time.
+    
+    Returns:
+        A string with the current time in HH:MM:SS format.
+    """
     current_time = time.strftime("%H:%M:%S")
-    return f"The current time is {current_time}"
+    return f"{current_time}"
 
 def get_current_weather(city:str) -> str:
-    """Get the current weather for a city
+    """Get the current weather for a city.
+
     Args:
-        city: The city to get the weather for
+        city: The city to get the weather for.
+
+    Returns:
+        A string with the current temperature in Celsius for the city.
     """
-    base_url = f"http://wttr.in/{city}?format=j1"
+    base_url = f"https://wttr.in/{city}?format=j1"
     response = requests.get(base_url)
     data = response.json()
     return f"The current temperature in {city} is: {data['current_condition'][0]['temp_C']}°C"
