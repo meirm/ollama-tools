@@ -103,7 +103,7 @@ while True:
 To run the example, execute the following command:
 
 ```bash
-python example.py
+python example_with_tool_support.py
 ```
 
 You can then interact with the chatbot and test the custom functions. Type your queries, and the chatbot will respond by calling the appropriate functions dynamically.
