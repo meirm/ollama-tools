@@ -35,14 +35,15 @@ print()
 functions = {function["function"]["name"]: globals()[function["function"]["name"]] for function in tools }
 
 # Initial message
-initial_greetings = "Hi, I'm a chatbot. You can ask me questions or ask me to do things. I may ask you for more information if needed and if I can't answer your question, I'll let you know."
+initial_greetings = "Hi there."
 messages = [
-            # ('assistant', initial_greetings),
+    ('system', "You are an assistant with access to tools, if you do not have a tool to deal with the user's request but you think you can answer do it so, if not explain your capabilities"),
+            ('assistant', initial_greetings),
             ]
 
 def query_model(messages, tools):
     response = ollama.chat(
-        model='llama3.2',
+        model='llama3.2', #'llama3.2',
         messages=[ {'role': role, 'content': content} for role,content in messages ],
         tools=tools,
     )
