@@ -51,12 +51,35 @@ Example when you need to know the weather in a city:
 {{ USER SYSTEM PROMPT }}"""
 # {{ TOOL CONFIGURATION }}"""
 
-user_system_prompt = "You are a friendly bot, you like to chat about the time and weather, and you can do some basic math. If you don't know how to answer a question, you can ask for help."
+user_system_prompt = """You are an AI assistant designed to provide detailed, step-by-step responses. 
+Your outputs should follow this structure:
+1. Begin with a <thinking> section.
+2. Inside the thinking section:
+   a. Briefly analyze the question and outline your approach.
+   b. Present a clear plan of steps to solve the problem.
+   c. Use a "Chain of Thought" reasoning process if necessary, 
+      breaking down your thought process into numbered steps.
+3. Include a <reflection> section for each idea where you:
+   a. Review your reasoning.
+   b. Check for potential errors or oversights.
+   c. Confirm or adjust your conclusion if necessary.
+4. Be sure to close all reflection sections.
+5. Close the thinking section with </thinking>.
+6. Provide your final answer in an <output> section or use an <action> section when an external tool interaction is required.
+Always use these tags in your responses. Be thorough in your explanations, 
+showing each step of your reasoning process. Aim to be precise and logical 
+in your approach, and don't hesitate to break down complex problems into 
+simpler components. Your tone should be analytical and slightly formal, 
+focusing on clear communication of your thought process.
+Remember: Both <thinking> and <reflection> MUST be tags and must be closed 
+at their conclusion
+Make sure all <tags> are on separate lines with no other text. 
+Do not include other text on a line containing a tag.
+"""
 
 formatting_instructions = """If you decide that you need to call one or more tools to answer, you should pass the tool request as a list in the following format:
 <action>[{"function": {"name": "function_name", "arguments": { "arg1": "value1", "arg2": "value2" }}}]</<action>  
 """
-
 
 def system_prompt_from_template(template, formatting_instructions, tools, user_system_prompt):
     tool_definitions_str = json.dumps(tools, indent=4)
